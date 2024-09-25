@@ -49,6 +49,10 @@ module.exports = class Cart {
       const existingProductIndex = cart.products.findIndex(
         (prod) => prod.id === id
       );
+
+      console.log(existingProductIndex);
+
+      if (existingProductIndex === -1) return;
       const existingProduct = cart.products[existingProductIndex];
       let qty = existingProduct.qty;
 
@@ -63,4 +67,3 @@ module.exports = class Cart {
     });
   }
 };
-    
