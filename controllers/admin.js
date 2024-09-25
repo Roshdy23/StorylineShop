@@ -37,6 +37,20 @@ exports.getEditProduct = (req, res, next) => {
   });
 };
 
+exports.postEditProduct = (req, res, next) => {
+  const title = req.body.title;
+  const imageUrl = req.body.imageUrl;
+  const price = req.body.price;
+  const description = req.body.description;
+  const productID = req.body.prodID;
+
+  let p = new Product(title, imageUrl, description, price);
+  p.id = productID;
+
+  Product.editProductById(productID, p, true);
+  res.redirect("/admin/products");
+};
+
 exports.getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
     res.render("admin/products", {
@@ -47,4 +61,9 @@ exports.getProducts = (req, res, next) => {
   });
 };
 
-
+exports.deleteProduct = (req, res, next) => {
+  const prodID = req.params.productID;
+  console.log(prodID);
+  Product.editProductById(prodID, [], false);
+  res.redirect("/admin/products");
+};
