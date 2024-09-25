@@ -8,7 +8,5 @@ const p = path.join(
 );
 
 module.exports = class Cart {
- 
-
-
+  
 };
