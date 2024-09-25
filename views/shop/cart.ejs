@@ -3,4 +3,23 @@
 
     <body>
         <%- include('../includes/navigation.ejs') %>
+        <main>
+           
+                <% if (products.length > 0) { %>
+                    
+                    <ul>
+                        <% products.forEach(product => {%>
+                            
+                            <li> <%= product.title %> qty =  <%= product.qty%></li>
+
+                        <%});%>
+
+                    </ul>
+
+                    
+                <% }else { %>
+                        <h1> No products found</h1>
+                <% } %>
+
+        </main>
         <%- include('../includes/end.ejs') %>

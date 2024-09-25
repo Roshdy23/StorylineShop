@@ -38,19 +38,21 @@ module.exports = class Cart {
     });
   }
 
-  static updateCart(id, productPrice) {
+  static deleteProduct(id, productPrice) {
     // Fetch the previous cart
     fs.readFile(p, (err, fileContent) => {
-      let cart = { products: [], totalPrice: 0 };
-      if (!err) {
-        cart = JSON.parse(fileContent);
+      if (err) {
+        return;
       }
+
+      let cart = { products: [], totalPrice: 0 };
+
+      cart = JSON.parse(fileContent);
+
       // Analyze the cart => Find existing product
       const existingProductIndex = cart.products.findIndex(
         (prod) => prod.id === id
       );
-
-      console.log(existingProductIndex);
 
       if (existingProductIndex === -1) return;
       const existingProduct = cart.products[existingProductIndex];
@@ -64,6 +66,20 @@ module.exports = class Cart {
       fs.writeFile(p, JSON.stringify(cart), (err) => {
         console.log(err);
       });
+    });
+  }
+
+  static getCart(cb) {
+    fs.readFile(p, (err, fileContent) => {
+      if (err) {
+        return;
+      }
+
+      let cart = { products: [], totalPrice: 0 };
+
+      cart = JSON.parse(fileContent);
+
+      cb(cart);
     });
   }
 };
