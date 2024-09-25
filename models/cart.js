@@ -54,13 +54,16 @@ module.exports = class Cart {
         (prod) => prod.id === id
       );
 
+      console.log(id);
       if (existingProductIndex === -1) return;
       const existingProduct = cart.products[existingProductIndex];
       let qty = existingProduct.qty;
 
-      cart.products.filter((prod) => {
+      let newProducts = cart.products.filter((prod) => {
         return prod.id != id;
       });
+
+      cart.products = newProducts; 
 
       cart.totalPrice = cart.totalPrice - qty * +productPrice;
       fs.writeFile(p, JSON.stringify(cart), (err) => {

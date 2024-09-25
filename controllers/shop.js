@@ -41,7 +41,7 @@ exports.getCart = (req, res, next) => {
         let productIndex = cart.products.findIndex(
           (prod) => prod.id === product.id
         );
-    
+
         if (productIndex != -1) {
           let prod = cart.products[productIndex];
           product["qty"] = prod.qty;
@@ -77,5 +77,13 @@ exports.getCheckout = (req, res, next) => {
   res.render("shop/checkout", {
     path: "/checkout",
     pageTitle: "Checkout",
+  });
+};
+
+exports.postDeleteCartProduct = (req, res, next) => {
+  const prodid = req.body.productId;
+  Product.findById(prodid, (product) => {
+    Cart.deleteProduct(prodid, product.price);
+    res.redirect("/cart");
   });
 };

@@ -12,6 +12,12 @@
                             
                             <li> <%= product.title %> qty =  <%= product.qty%></li>
 
+                            <form action="/delete-cart-item" method="POST">
+
+                                <input type="hidden" value ="<%=product.id%>" name="productId">
+                                <button type ="submit"  class ="btn"> delete</button>
+                            </form>
+
                         <%});%>
 
                     </ul>
