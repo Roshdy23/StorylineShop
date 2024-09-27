@@ -16,8 +16,7 @@ class Product {
     let dbOp;
     if (this._id) {
       // Update the product
-      console.log("look hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-      console.log(this._id);
+
       dbOp = db
         .collection("products")
         .updateOne({ _id: this._id }, { $set: this });
@@ -52,11 +51,25 @@ class Product {
     const db = getDb();
     return db
       .collection("products")
-      .find({ _id: new ObjectId(prodId) })
+      .find({ _id: prodId})
       .next()
       .then((product) => {
         console.log(product);
         return product;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  static deleteById(prodId) {
+    const db = getDb();
+    console.log(prodId);  
+    return db
+      .collection("products")
+      .deleteOne({ _id: new ObjectId(prodId) })
+      .then((result) => {
+        console.log("deleted");
       })
       .catch((err) => {
         console.log(err);
