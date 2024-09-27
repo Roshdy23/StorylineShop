@@ -1,4 +1,5 @@
-const getDb = require('../util/database').getDb;
+const mongodb =require('mongodb');
+const getDb = require("../util/database").getDb;
 
 class Product {
   constructor(title, price, description, imageUrl) {
@@ -11,12 +12,12 @@ class Product {
   save() {
     const db = getDb();
     return db
-      .collection('products')
+      .collection("products")
       .insertOne(this)
-      .then(result => {
+      .then((result) => {
         console.log(result);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -24,14 +25,30 @@ class Product {
   static fetchAll() {
     const db = getDb();
     return db
-      .collection('products')
+      .collection("products")
       .find()
       .toArray()
-      .then(products => {
+      .then((products) => {
         console.log(products);
         return products;
       })
-      .catch(err => {
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  static getProduct(id) {
+    const db = getDb();
+  
+    return db
+      .collection("products")
+      .find({_id: new mongodb.ObjectId(id)})
+      .next()
+      .then((product) => {
+        console.log('okay');
+        return product;
+      })
+      .catch((err) => {
         console.log(err);
       });
   }
