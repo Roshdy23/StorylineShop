@@ -1,60 +1,40 @@
-const getDb = require("../util/database").getDb;
+const getDb = require('../util/database').getDb;
 
 class Product {
-  constructor(title, imageUrl, description, price) {
+  constructor(title, price, description, imageUrl) {
     this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
     this.price = price;
-  }
-
-  save() {
-    const db = getDb();
-    db.collection("products")
-      .insertOne(this)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-}
-
-const getProductsFromFile = (cb) => {
-  fs.readFile(p, (err, fileContent) => {
-    if (err) {
-      cb([]);
-    } else {
-      cb(JSON.parse(fileContent));
-    }
-  });
-};
-
-module.exports = class Product {
-  constructor(title, imageUrl, description, price) {
-    this.title = title;
-    this.imageUrl = imageUrl;
     this.description = description;
-    this.price = price;
+    this.imageUrl = imageUrl;
   }
 
   save() {
     const db = getDb();
     return db
-      .collection("products")
+      .collection('products')
       .insertOne(this)
-      .then((result) => {
+      .then(result => {
         console.log(result);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }
 
-  static fetchAll(cb) {}
+  static fetchAll() {
+    const db = getDb();
+    return db
+      .collection('products')
+      .find()
+      .toArray()
+      .then(products => {
+        console.log(products);
+        return products;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+}
 
-  static findById(id, cb) {}
-
-  static editProductById(id, newProduct, edit) {}
-};
+module.exports = Product;

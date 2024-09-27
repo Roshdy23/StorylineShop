@@ -5,11 +5,7 @@ let _db;
 
 const mongoConnect = (callback) => {
   MongoClient.connect(
-    "mongodb+srv://roshdy23:7qpZsEZBv9KXJj2C@cluster0.3fhhn.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0",
-    {
-      ssl: true,  // Ensure SSL is enabled
-      tlsAllowInvalidCertificates: true,  // Ensure certificates are valid  
-    }
+    "mongodb+srv://roshdy23:7qpZsEZBv9KXJj2C@cluster0.3fhhn.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0"
   )
     .then((client) => {
       console.log("connected");
