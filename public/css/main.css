@@ -34,7 +34,7 @@ form {
 .main-header {
   width: 100%;
   height: 3.5rem;
-  background-color: #00695c;
+  background-color: #000b69;
   padding: 0 1.5rem;
   display: flex;
   align-items: center;
@@ -119,7 +119,7 @@ form {
 .mobile-nav__item a:active,
 .mobile-nav__item a:hover,
 .mobile-nav__item a.active {
-  background: #00695c;
+  background: #000b69;
   color: white;
   border-radius: 3px;
 }
@@ -201,16 +201,17 @@ form {
   padding: 0.25rem 1rem;
   text-decoration: none;
   font: inherit;
-  border: 1px solid #00695c;
-  color: #00695c;
+  border: 1px solid #000b69;
+  color: #000b69;
   background: white;
   border-radius: 3px;
   cursor: pointer;
+  margin-top: 0.5rem;
 }
 
 .btn:hover,
 .btn:active {
-  background-color: #00695c;
+  background-color: #000b69;
   color: white;
 }
 
