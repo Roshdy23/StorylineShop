@@ -3,3 +3,14 @@
   display: block;
   width: 20rem;
 }
+
+.errorMsg {
+  background-color: rgb(227, 141, 141);
+  color: white;
+  padding:20px;
+  text-align: center;
+  width: 25%;
+  margin-left: 36%;
+  border: red solid;
+  border-width: 3px;
+}
