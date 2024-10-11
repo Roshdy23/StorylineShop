@@ -22,6 +22,9 @@ module.exports = (req, res, next) => {
       next();
     });
   } else {
+  
+    req.isAdmin = false;
+    req.isLoggedIn = false;
     next();
   }
 };
