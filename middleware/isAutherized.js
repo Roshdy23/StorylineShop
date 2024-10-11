@@ -1,9 +1,11 @@
-module.exports = isAdmin = (req, res, next) => {
-  if (req.user.isAdmin) {
-    return res.status(403).render("403", {
-      path: "/403",
-      pageTitle: "403 Forbidden",
-    });
+const User = require("../models/user");
+
+module.exports = (req, res, next) => {
+  console.log(req.userRole);
+
+  if (req.userRole !== "admin") {
+    res.redirect("/403");
   }
+
   next();
 };

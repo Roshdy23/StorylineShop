@@ -3,13 +3,16 @@ const Order = require("../models/order");
 const User = require("../models/user");
 
 exports.getProducts = (req, res, next) => {
+  let isAdmin = false;
+  if (req.user) isAdmin = req.user.isAdmin;
+
   Product.find()
     .then((products) => {
-      console.log(products);
       res.render("shop/product-list", {
         prods: products,
         pageTitle: "All Products",
         path: "/products",
+        isAdmin: isAdmin,
       });
     })
     .catch((err) => {
@@ -18,6 +21,9 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.getProduct = (req, res, next) => {
+  let isAdmin = false;
+  if (req.user) isAdmin = req.user.isAdmin;
+
   const prodId = req.params.productId;
   Product.findById(prodId)
     .then((product) => {
@@ -25,18 +31,23 @@ exports.getProduct = (req, res, next) => {
         product: product,
         pageTitle: product.title,
         path: "/products",
+        isAdmin: isAdmin,
       });
     })
     .catch((err) => console.log(err));
 };
 
 exports.getIndex = (req, res, next) => {
+  let isAdmin = false;
+  if (req.user) isAdmin = req.user.isAdmin;
+
   Product.find()
     .then((products) => {
       res.render("shop/index", {
         prods: products,
         pageTitle: "Shop",
         path: "/",
+        isAdmin: isAdmin,
       });
     })
     .catch((err) => {
@@ -45,6 +56,9 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
+  let isAdmin = false;
+  if (req.user) isAdmin = req.user.isAdmin;
+
   User.findById(req.userId)
     .populate("cart.items.productId")
     .then((user) => {
@@ -58,6 +72,7 @@ exports.getCart = (req, res, next) => {
         path: "/cart",
         pageTitle: "Your Cart",
         products: products,
+        isAdmin: isAdmin,
       });
     })
     .catch((err) => {
@@ -75,7 +90,6 @@ exports.postCart = (req, res, next) => {
 
   Product.findById(prodId)
     .then((product) => {
-      console.log("heeeeeeeeeeeeeeeeeeeeeee");
       console.log(product);
       return User.findById(req.userId)
         .then((user) => {
@@ -97,12 +111,15 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  req.user
-    .removeFromCart(prodId)
-    .then((result) => {
-      res.redirect("/cart");
-    })
-    .catch((err) => console.log(err));
+
+  User.findById(req.userId).then((user) => {
+    user
+      .removeFromCart(prodId)
+      .then((result) => {
+        res.redirect("/cart");
+      })
+      .catch((err) => console.log(err));
+  });
 };
 
 exports.postOrder = (req, res, next) => {
@@ -132,12 +149,16 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
+  let isAdmin = false;
+  if (req.user) isAdmin = req.user.isAdmin;
+
   Order.find({ "user.userId": req.user._id })
     .then((orders) => {
       res.render("shop/orders", {
         path: "/orders",
         pageTitle: "Your Orders",
         orders: orders,
+        isAdmin: isAdmin,
       });
     })
     .catch((err) => console.log(err));

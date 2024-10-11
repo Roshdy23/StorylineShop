@@ -16,6 +16,7 @@ exports.getLogin = (req, res, next) => {
     pageTitle: "login",
     path: "/login",
     errors: "",
+    isAdmin: false
   });
 };
 
@@ -28,6 +29,7 @@ exports.postLogin = (req, res, next) => {
       pageTitle: "login",
       path: "/login",
       errors: errors[0].msg,
+      isAdmin: false
     });
   }
 
@@ -48,6 +50,7 @@ exports.postLogin = (req, res, next) => {
           pageTitle: "login",
           path: "/login",
           errors: "this email doesn't exist",
+          isAdmin: false
         });
       }
       currentUser = user;
@@ -60,6 +63,7 @@ exports.postLogin = (req, res, next) => {
           pageTitle: "login",
           path: "/login",
           errors: "the email and password doesn't match",
+          isAdmin: false
         });
       }
 
@@ -88,6 +92,7 @@ exports.getSignup = (req, res, next) => {
     pageTitle: "Signup",
     path: "/signup",
     errors: "",
+    isAdmin: false
   });
 };
 
@@ -99,6 +104,7 @@ exports.postSignup = (req, res, next) => {
       pageTitle: "signup",
       path: "/signup",
       errors: errors[0].msg,
+      isAdmin: false
     });
   }
 
@@ -115,6 +121,7 @@ exports.postSignup = (req, res, next) => {
           pageTitle: "signup",
           path: "/signup",
           errors: "this email already exists",
+          isAdmin: false
         });
       }
       console.log(user);
@@ -124,6 +131,7 @@ exports.postSignup = (req, res, next) => {
           pageTitle: "signup",
           path: "/signup",
           errors: "The passwords doesn't match",
+          isAdmin: false
         });
       }
 

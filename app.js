@@ -27,10 +27,9 @@ app.use("/admin", adminRoutes);
 
 app.use(shopRoutes);
 app.use(authRoutes);
-
+app.get("/403", errorController.get403);
 app.use(errorController.get404);
 
-app.use((error, req, res, next) => {});
 mongoose
   .connect(
     "mongodb+srv://roshdy23:7qpZsEZBv9KXJj2C@cluster0.3fhhn.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0"
