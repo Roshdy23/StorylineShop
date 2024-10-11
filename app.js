@@ -1,8 +1,9 @@
 const path = require("path");
 
 const express = require("express");
-const bodyParser = require("body-parser");
 
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 
 const errorController = require("./controllers/error");
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/admin", adminRoutes);
+app.use(cookieParser());
 app.use(shopRoutes);
 app.use(authRoutes);
 

@@ -1,7 +1,15 @@
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
 
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const user = require("../models/user");
+
+const createToken = (id, role) => {
+  return jwt.sign({ userId: id, userRole: role }, "super secrect key", {
+    expiresIn: "1h",
+  });
+};
 
 exports.getLogin = (req, res, next) => {
   res.status(200).render("auth/login", {
@@ -30,6 +38,8 @@ exports.postLogin = (req, res, next) => {
 
   //bcrypt.compare(password, user.password);
 
+  let currentUser;
+
   User.findOne({ email: email })
 
     .then((user) => {
@@ -40,7 +50,7 @@ exports.postLogin = (req, res, next) => {
           errors: "this email doesn't exist",
         });
       }
-      console.log(user);
+      currentUser = user;
 
       return bcrypt.compare(password, user.password);
     })
@@ -53,6 +63,19 @@ exports.postLogin = (req, res, next) => {
         });
       }
 
+      let token;
+
+      if (currentUser.isAdmin) {
+        token = createToken(currentUser._id, "admin");
+      } else {
+        token = createToken(currentUser._id, "user");
+      }
+
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        maxAge: 3600000,
+      });
+
       res.redirect("/");
     })
     .catch((err) => {
@@ -60,14 +83,13 @@ exports.postLogin = (req, res, next) => {
     });
 };
 
-
-exports.getSignup =(req, res, next) =>{
+exports.getSignup = (req, res, next) => {
   res.status(200).render("auth/signup", {
     pageTitle: "Signup",
     path: "/signup",
     errors: "",
   });
-}
+};
 
 exports.postSignup = (req, res, next) => {
   const errors = validationResult(req).errors;
@@ -83,6 +105,7 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
+  const adminSecretKey = req.body.isAdmin;
 
   User.findOne({ email: email })
 
@@ -96,35 +119,31 @@ exports.postSignup = (req, res, next) => {
       }
       console.log(user);
 
-     if(password !== confirmPassword) {
-      return res.status(401).render("auth/signup", {
-        pageTitle: "signup",
-        path: "/signup",
-        errors: "The passwords doesn\'t match",
-      });
-     }
+      if (password !== confirmPassword) {
+        return res.status(401).render("auth/signup", {
+          pageTitle: "signup",
+          path: "/signup",
+          errors: "The passwords doesn't match",
+        });
+      }
 
-      bcrypt
-      .hash(password, 12)
-      .then(hashedPassword => {
+      let isAdmin = adminSecretKey === "adminKey";
 
+      bcrypt.hash(password, 12).then((hashedPassword) => {
         const user = new User({
           email: email,
           password: hashedPassword,
-          cart: { items: [] }
+          cart: { items: [] },
+          isAdmin: isAdmin,
         });
 
         return user.save();
-
-        })
-
+      });
     })
     .then((result) => {
-      
-
       return res.redirect("/login");
     })
     .catch((err) => {
       console.log(err);
     });
-}
+};

@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   
+
   email: {
     type: String,
     required: true
@@ -23,6 +24,11 @@ const userSchema = new Schema({
   password: {
     type: String,
     required:true, 
+  },
+
+  isAdmin: {
+    type: Boolean,
+    require:true,
   }
 });
 
