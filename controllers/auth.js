@@ -71,7 +71,6 @@ exports.getSignup =(req, res, next) =>{
 
 exports.postSignup = (req, res, next) => {
   const errors = validationResult(req).errors;
-  let sendErrors = null;
 
   if (errors.length > 0) {
     return res.status(401).render("auth/signup", {
@@ -85,15 +84,11 @@ exports.postSignup = (req, res, next) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
 
-  console.log(password);
-
-  //bcrypt.compare(password, user.password);
-
   User.findOne({ email: email })
 
     .then((user) => {
       if (user) {
-        res.status(401).render("auth/signup", {
+        return res.status(401).render("auth/signup", {
           pageTitle: "signup",
           path: "/signup",
           errors: "this email already exists",
@@ -101,18 +96,33 @@ exports.postSignup = (req, res, next) => {
       }
       console.log(user);
 
-      return bcrypt.compare(password, user.password);
-    })
-    .then((isEqual) => {
-      if (!isEqual) {
-        res.status(401).render("auth/login", {
-          pageTitle: "login",
-          path: "/login",
-          errors: "the email and password doesn't match",
-        });
-      }
+     if(password !== confirmPassword) {
+      return res.status(401).render("auth/signup", {
+        pageTitle: "signup",
+        path: "/signup",
+        errors: "The passwords doesn\'t match",
+      });
+     }
 
-      res.redirect("/");
+      bcrypt
+      .hash(password, 12)
+      .then(hashedPassword => {
+
+        const user = new User({
+          email: email,
+          password: hashedPassword,
+          cart: { items: [] }
+        });
+
+        return user.save();
+
+        })
+
+    })
+    .then((result) => {
+      
+
+      return res.redirect("/login");
     })
     .catch((err) => {
       console.log(err);
