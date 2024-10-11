@@ -3,16 +3,14 @@ const Order = require("../models/order");
 const User = require("../models/user");
 
 exports.getProducts = (req, res, next) => {
-  let isAdmin = false;
-  if (req.user) isAdmin = req.user.isAdmin;
-
   Product.find()
     .then((products) => {
       res.render("shop/product-list", {
         prods: products,
         pageTitle: "All Products",
         path: "/products",
-        isAdmin: isAdmin,
+        isAdmin: req.isAdmin,
+        isLoggedIn: req.isLoggedIn,
       });
     })
     .catch((err) => {
@@ -21,9 +19,6 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.getProduct = (req, res, next) => {
-  let isAdmin = false;
-  if (req.user) isAdmin = req.user.isAdmin;
-
   const prodId = req.params.productId;
   Product.findById(prodId)
     .then((product) => {
@@ -31,15 +26,16 @@ exports.getProduct = (req, res, next) => {
         product: product,
         pageTitle: product.title,
         path: "/products",
-        isAdmin: isAdmin,
+        isAdmin: req.isAdmin,
+        isLoggedIn: req.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
 };
 
 exports.getIndex = (req, res, next) => {
-  let isAdmin = false;
-  if (req.user) isAdmin = req.user.isAdmin;
+  console.log("aedfAWEF QWEWGFEAG");
+  console.log(req.isLoggedIn);
 
   Product.find()
     .then((products) => {
@@ -47,7 +43,8 @@ exports.getIndex = (req, res, next) => {
         prods: products,
         pageTitle: "Shop",
         path: "/",
-        isAdmin: isAdmin,
+        isAdmin: req.isAdmin,
+        isLoggedIn: req.isLoggedIn,
       });
     })
     .catch((err) => {
@@ -56,9 +53,6 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  let isAdmin = false;
-  if (req.user) isAdmin = req.user.isAdmin;
-
   User.findById(req.userId)
     .populate("cart.items.productId")
     .then((user) => {
@@ -72,7 +66,8 @@ exports.getCart = (req, res, next) => {
         path: "/cart",
         pageTitle: "Your Cart",
         products: products,
-        isAdmin: isAdmin,
+        isAdmin: req.isAdmin,
+        isLoggedIn: req.isLoggedIn,
       });
     })
     .catch((err) => {
@@ -81,6 +76,8 @@ exports.getCart = (req, res, next) => {
         pageTitle: "Error",
         path: "/error",
         message: "An error occurred while retrieving your cart.",
+        isLoggedIn: req.isLoggedIn,
+        isAdmin: req.isAdmin,
       });
     });
 };
@@ -149,16 +146,14 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  let isAdmin = false;
-  if (req.user) isAdmin = req.user.isAdmin;
-
   Order.find({ "user.userId": req.user._id })
     .then((orders) => {
       res.render("shop/orders", {
         path: "/orders",
         pageTitle: "Your Orders",
         orders: orders,
-        isAdmin: isAdmin,
+        isAdmin: req.isAdmin,
+        isLoggedIn: req.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));

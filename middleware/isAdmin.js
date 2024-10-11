@@ -3,21 +3,25 @@ const User = require("../models/user");
 
 module.exports = (req, res, next) => {
   const token = req.cookies.jwt;
+  req.isAdmin = false;
 
   if (token) {
     jwt.verify(token, "super secret key", (err, decodedToken) => {
       if (err) {
-        return res.redirect("/login");
+        console.log(err);
+        req.isAdmin = false;
+        req.isLoggedIn = false;
+        next();
       }
+      console.log(req.isLoggedIn);
 
       req.userId = decodedToken.userId;
-      req.userRole = decodedToken.userRole;
-      req.isAdmin = req.userRoleuserRole === "admin";
+      req.isAdmin = decodedToken.userRole === "admin";
       req.isLoggedIn = true;
 
       next();
     });
   } else {
-    return res.redirect("/login");
+    next();
   }
 };

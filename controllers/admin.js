@@ -1,11 +1,14 @@
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
+
+
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
     editing: false,
-    isAdmin:true
+    isAdmin: req.isAdmin,
+    isLoggedIn: req.isLoggedIn
   });
 };
 
@@ -49,7 +52,8 @@ exports.getEditProduct = (req, res, next) => {
         path: '/admin/edit-product',
         editing: editMode,
         product: product,
-         isAdmin: false
+         isAdmin: req.isAdmin,
+         isLoggedIn: req.isLoggedIn
       });
     })
     .catch(err => console.log(err));
@@ -87,7 +91,8 @@ exports.getProducts = (req, res, next) => {
         prods: products,
         pageTitle: 'Admin Products',
         path: '/admin/products',
-        isAdmin: false
+        isAdmin: req.isAdmin,
+        isLoggedIn: req.isLoggedIn
       });
     })
     .catch(err => console.log(err));

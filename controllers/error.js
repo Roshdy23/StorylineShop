@@ -5,6 +5,7 @@ exports.get404 = (req, res, next) => {
       pageTitle: "Page Not Found",
       path: "/404",
       isAdmin: false,
+      isLoggedIn: false,
     });
 };
 
@@ -15,5 +16,6 @@ exports.get403 = (req, res, next) => {
       pageTitle: "Access Denied",
       path: "/403",
       isAdmin: false,
+      isLoggedIn: true
     });
 };

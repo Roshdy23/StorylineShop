@@ -4,8 +4,9 @@ const { check, validationResult } = require("express-validator");
 
 const authController = require("../controllers/auth");
 const router = express.Router();
+const isLogged = require("../middleware/isLogged");
 
-router.get("/login", authController.getLogin);
+router.get("/login", isLogged, authController.getLogin);
 
 router.post(
   "/login",
@@ -19,7 +20,7 @@ router.post(
   authController.postLogin
 );
 
-router.get("/signup", authController.getSignup);
+router.get("/signup", isLogged, authController.getSignup);
 
 router.post(
   "/signup",
@@ -36,5 +37,7 @@ router.post(
   ],
   authController.postSignup
 );
+
+router.get("/logout", authController.getLogout);
 
 module.exports = router;

@@ -16,7 +16,8 @@ exports.getLogin = (req, res, next) => {
     pageTitle: "login",
     path: "/login",
     errors: "",
-    isAdmin: false
+    isAdmin: false,
+    isLoggedIn: false,
   });
 };
 
@@ -29,7 +30,8 @@ exports.postLogin = (req, res, next) => {
       pageTitle: "login",
       path: "/login",
       errors: errors[0].msg,
-      isAdmin: false
+      isAdmin: false,
+      isLoggedIn: false,
     });
   }
 
@@ -50,7 +52,8 @@ exports.postLogin = (req, res, next) => {
           pageTitle: "login",
           path: "/login",
           errors: "this email doesn't exist",
-          isAdmin: false
+          isAdmin: false,
+          isLoggedIn: false,
         });
       }
       currentUser = user;
@@ -63,7 +66,8 @@ exports.postLogin = (req, res, next) => {
           pageTitle: "login",
           path: "/login",
           errors: "the email and password doesn't match",
-          isAdmin: false
+          isAdmin: false,
+          isLoggedIn: false,
         });
       }
 
@@ -92,7 +96,8 @@ exports.getSignup = (req, res, next) => {
     pageTitle: "Signup",
     path: "/signup",
     errors: "",
-    isAdmin: false
+    isAdmin: false,
+    isLoggedIn: false,
   });
 };
 
@@ -104,7 +109,8 @@ exports.postSignup = (req, res, next) => {
       pageTitle: "signup",
       path: "/signup",
       errors: errors[0].msg,
-      isAdmin: false
+      isAdmin: false,
+      isLoggedIn: false,
     });
   }
 
@@ -121,7 +127,8 @@ exports.postSignup = (req, res, next) => {
           pageTitle: "signup",
           path: "/signup",
           errors: "this email already exists",
-          isAdmin: false
+          isAdmin: false,
+          isLoggedIn: false,
         });
       }
       console.log(user);
@@ -131,7 +138,8 @@ exports.postSignup = (req, res, next) => {
           pageTitle: "signup",
           path: "/signup",
           errors: "The passwords doesn't match",
-          isAdmin: false
+          isAdmin: false,
+          isLoggedIn: false,
         });
       }
 
@@ -154,4 +162,9 @@ exports.postSignup = (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+exports.getLogout = (req, res, next) => {
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.redirect("/");
 };

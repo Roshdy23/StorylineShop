@@ -6,6 +6,6 @@ module.exports = (req, res, next) => {
   if (req.userRole !== "admin") {
     res.redirect("/403");
   }
-
+  req.isAdmin = true;
   next();
 };
