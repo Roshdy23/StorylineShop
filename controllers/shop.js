@@ -8,17 +8,17 @@ exports.getProducts = (req, res, next) => {
 
   Product.find()
     .countDocuments()
-    .then(numProducts => {
+    .then((numProducts) => {
       totalItems = numProducts;
       return Product.find()
         .skip((page - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
     })
-    .then(products => {
-      res.render('shop/product-list', {
+    .then((products) => {
+      res.render("shop/product-list", {
         prods: products,
-        pageTitle: 'Products',
-        path: '/products',
+        pageTitle: "Products",
+        path: "/products",
         currentPage: page,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems,
         hasPreviousPage: page > 1,
@@ -26,10 +26,10 @@ exports.getProducts = (req, res, next) => {
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
         isAdmin: req.isAdmin,
-        isLoggedIn: req.isLoggedIn
+        isLoggedIn: req.isLoggedIn,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -52,23 +52,22 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-
   const page = +req.query.page || 1;
   let totalItems;
 
   Product.find()
     .countDocuments()
-    .then(numProducts => {
+    .then((numProducts) => {
       totalItems = numProducts;
       return Product.find()
         .skip((page - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
     })
-    .then(products => {
-      res.render('shop/product-list', {
+    .then((products) => {
+      res.render("shop/product-list", {
         prods: products,
-        pageTitle: 'Products',
-        path: '/products',
+        pageTitle: "Products",
+        path: "/products",
         currentPage: page,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems,
         hasPreviousPage: page > 1,
@@ -76,10 +75,10 @@ exports.getIndex = (req, res, next) => {
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
         isAdmin: req.isAdmin,
-        isLoggedIn: req.isLoggedIn
+        isLoggedIn: req.isLoggedIn,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -151,6 +150,41 @@ exports.postCartDeleteProduct = (req, res, next) => {
       })
       .catch((err) => console.log(err));
   });
+};
+
+exports.getCheckout = (req, res, next) => {
+  User.findById(req.userId)
+    .populate("cart.items.productId")
+    .then((user) => {
+      if (!user) {
+        return res.redirect("/login");
+      }
+
+      const products = user.cart.items || [];
+      console.log(products);
+      let total = 0;
+      products.forEach((p) => {
+        total += p.productId.price * p.quantity;
+      });
+      return res.render("shop/checkout", {
+        path: "/checkout",
+        pageTitle: "Checkout",
+        products: products,
+        isAdmin: req.isAdmin,
+        isLoggedIn: req.isLoggedIn,
+        totalSum: total,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).render("shop/error", {
+        pageTitle: "Error",
+        path: "/error",
+        message: "An error occurred while retrieving your cart.",
+        isLoggedIn: req.isLoggedIn,
+        isAdmin: req.isAdmin,
+      });
+    });
 };
 
 exports.postOrder = (req, res, next) => {
