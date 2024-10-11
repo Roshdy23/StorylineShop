@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const user = require("../models/user");
 
 const createToken = (id, role) => {
-  return jwt.sign({ userId: id, userRole: role }, "super secrect key", {
+  return jwt.sign({ userId: id, userRole: role }, "super secret key", {
     expiresIn: "1h",
   });
 };
