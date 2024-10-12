@@ -52,7 +52,7 @@ https://github.com/user-attachments/assets/6468da20-a794-451a-931f-1192b40394f2
  ```
 - Finally run npm start and start the project.
 
-- You can see the project requirement [Here]([https://example.com](https://roadmap.sh/projects/ecommerce-api)).
+- You can see the project requirement [Here](https://roadmap.sh/projects/ecommerce-api).
 
 
 
