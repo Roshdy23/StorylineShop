@@ -50,7 +50,7 @@ https://github.com/user-attachments/assets/6468da20-a794-451a-931f-1192b40394f2
      })
    });
   ```
-  - Finally run npm start and start the project.
+- Finally run npm start and start the project.
         
 
 
