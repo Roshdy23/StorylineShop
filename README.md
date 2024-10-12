@@ -35,7 +35,7 @@ https://github.com/user-attachments/assets/6468da20-a794-451a-931f-1192b40394f2
   });
 ```
 - Make account on stripe and copy your secret api key and put it here in the shop.js.
-- 
+  
 ```
   const stripe = require("stripe")(
    "your secret api key on stripe"
