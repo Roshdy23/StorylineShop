@@ -18,7 +18,7 @@ https://github.com/user-attachments/assets/6468da20-a794-451a-931f-1192b40394f2
 
 
 ## How to Run
-- Install the used dependencies.
+- Clone the repo and Install the used dependencies.
 - Make account on MongoDB Atlas and create a cluster.
 - Copy your connection string and put it here.
   
@@ -43,17 +43,16 @@ https://github.com/user-attachments/assets/6468da20-a794-451a-931f-1192b40394f2
 ```
 - Copy your public api key and put it here in the checkout.ejs view.
 
-  ``` 
+``` 
    orderBtn.addEventListener('click', function() {
   stripe.redirectToCheckout({
    sessionId: '<%= sessionId %>'
      })
    });
-  ```
+ ```
 - Finally run npm start and start the project.
-        
 
-
+- You can see the project requirement [Here]([https://example.com](https://roadmap.sh/projects/ecommerce-api)).
 
 
 
