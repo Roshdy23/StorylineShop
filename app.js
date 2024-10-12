@@ -32,7 +32,7 @@ app.use(errorController.get404);
 
 mongoose
   .connect(
-    "mongodb+srv://roshdy23:7qpZsEZBv9KXJj2C@cluster0.3fhhn.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0"
+    "your Mongodb atlas connection string"
   )
   .then((result) => {
     app.listen(3000);
