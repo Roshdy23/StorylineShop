@@ -5,8 +5,7 @@ StorylineShop is an e-commerce platform for selling books online.
 [![Node][Node.js]][Node-url] [![Express][Express.js]][Express-url] [![MongoDB][MongoDB]][MongoDB-url] [![Mongoose][Mongoose]][Mongoose-url]
 
 ## Demo Video
-https://github.com/Roshdy23/Playmaker/assets/109288170/ff85a55e-3ae5-4028-9641-d6b959d8fcee
-
+https://github.com/user-attachments/assets/6468da20-a794-451a-931f-1192b40394f2
 ## Features
 
 -  Secure JWT-based authentication with role-based access control (admin, user) and hash encryption of users passwords.
